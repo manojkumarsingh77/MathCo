@@ -1,0 +1,7 @@
+1.Write a query to retrive data of "WakefieldFamily".
+2.Write a query to retrive "givenName" for children belonging to "WakefieldFamily" family.
+3.Write a query to retrive "Name" and "City" from "Families" and Concad them in in column called AS "Family".
+4.Write a query to retrive "City" and "State" as "CityState" from Families.
+5.Write a query to retrive count of "Children" from "Child".
+
+
