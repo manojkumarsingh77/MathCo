@@ -1,0 +1,193 @@
+-Create an Azure Machine Learning Pipeline-
+
+- Introduction
+With Azure Machine Learning Studio, we don't need to write any code to get started using machine learning. With Machine Learning pipelines, we can drag and drop functionality into a graph to create repeatable processing units. In this lab, we create a Machine Learning pipeline to predict the progression of diabetes based on a set of health metrics, all without writing a single line of code.
+
+- Scenario
+What if we need to take advantage of the power of machine learning, but don't have time to learn all of the code? What if we need a visual representation of our work to show our boss or other stakeholders? Azure Machine Learning pipelines help with both of these problems. We can start transforming data and training models, all in a visual way.
+
+We will use the Sample: Diabetes dataset to train a model and predict the progression of the disease based on different health markers.
+
+This lab is using the designer feature of Azure Machine Learning Studio. Designer is only available in an Enterprise Machine Learning workspace, one of which has been provisioned for the lab. If we are repeating these steps with our own resources, be sure to use an Enterprise workspace.
+
+- Connecting to the Lab
+1.Log in to the Azure Portal using the credentials provided on the lab instructions page.
+
+- Create a Training Cluster
+1.Click the link for the Machine Learning workspace. It will start with mlw.
+
+2.In the center window, click Launch studio.
+
+3.Skip the tour by closing the popup window.
+
+4.In the left-hand menu, under Manage, click Compute.
+
+5.Click the Training clusters tab.
+
+6.Click + New.
+
+7.Enter a unique name in the box provided. Enter tc-mlw- and then type some random characters for uniqueness.
+
+8.Click the combo box for Virtual Machine size and search for Standard_D2_v2. Select the Standard_D2_v2 row.
+
+9.Set the Minimum number of nodes to 2.
+
+10.Set the Maximum number of nodes to 2.
+
+11.Click Create.
+
+12.While waiting for the creation to complete, open a new tab explore the Sample: Diabetes dataset available through Azure Open Datasets. Be sure to view the original data description for more information about what the data fields mean.
+
+- Register and Preview the Diabetes Dataset
+
+1.Once the cluster is finished creating, in the left-hand menu, click Datasets under Assets.
+
+2.Click + Create dataset and select From Open Datasets in the dropdown menu.
+
+3.Select the Sample: Diabetes dataset.
+
+4.Click Next.
+
+5.In the Name box, enter "OpenDiabetesData" without the quotes.
+
+6.Click Create.
+
+- Explore the Dataset
+
+1.Click OpenDiabetesData.
+
+2.Click Generate profile.
+
+3.Click Generate.
+
+4.In the left-hand menu, under Assets, click Experiments.
+
+5.Click dataset_unregistered_datesets and monitor the results.
+
+6.Wait until the Status is Complete. Click Refresh to check on the status while waiting. This will take a few minutes.
+
+- Transform the Data
+
+1.In the left-hand menu, under Assets, click Datasets.
+
+2.Click OpenDiabetesData.
+
+3.Click the Explore tab.
+
+4.Click the Profile tab and examine the data.
+
+5.In the left-hand menu, under Author, click Designer.
+
+6.Close the popup window if one appears.
+
+7.Click the large plus sign for Easy-to-use prebuilt modules.
+
+8.In the right-hand pane, click Select compute target.
+
+9.Select the training cluster we provisioned in the first task and then click Save.
+
+10.Close the settings pane.
+
+11.Use the title bar at the top to name the pipeline DiabetesPipeline.
+
+12.Open the Datasets accordion.
+
+13.Click and drag OpenDiabetesData onto the canvas in the center of the window.
+
+14.Open the Data Transformation accordion.
+
+15.Click and drag Select Columns in Dataset onto the canvas.
+
+16.Click on the circle in the border for OpenDiabetesData and draw a connecting line to Select Columns in Dataset. An arrow should go from the former to the latter.
+
+17.Select Select Columns in Dataset.
+
+18.In the properties window, click Edit column.
+
+19.Use the combo box to select All columns.
+
+20.Click Save.
+
+21.Under the Data Transformation accordion, click and drag Split Data onto the canvas.
+
+22.Connect the output (bottom) of Select Columns in Dataset to the input (top) of Split Data.
+
+23.Select Split Data.
+
+24.In the properties window, set the Fraction of rows in the first output dataset to be "0.7" without the quotes.
+
+25.Under Random seed, enter "42" without the quotes.
+
+26.Fill in the Comment box with "Train/Test Split 70/30".
+
+- Train a Model
+
+1.Open the Model Training accordion.
+
+2.Click and drag Train Model onto the canvas.
+
+3.Connect the left output of Split Data to the right input of Train Model.
+
+4.Select Train Model.
+
+5.In the properties window, click Edit column.
+
+6.In the box provided after Column names, enter Y and then click Save.
+
+7.Open the machine Learning Algorithms accordion.
+
+8.Click and drag Linear Regression onto the canvas.
+
+9.Connect the output of Linear Regression to the left input of Train Model.
+
+10.Expand the Model Scoring & Evaluation accordion.
+
+11.Click and drag Score Model onto the canvas.
+
+12.Connect the output from Train Model to the left input of Score Model.
+
+13.Take the right output of Split Data and connect it to the right input of Score Model.
+
+14.Click and drag Evaluate Model onto the canvas.
+
+15.Connect the output of Score Model to the left input of Evaluate Model.
+
+16.In the top-right corner, click Submit.
+
+17.In the popup window that appears, select Create new.
+
+18.Enter a New experiment name of "DiabetesExperiment" without the quotes.
+
+19.Enter a Run description of "DiabetesPipeline - Linear Regression" without the quotes.
+
+20.Click Submit.
+
+21.In the left-hand pane, under Assets, click Experiments.
+
+22.Click DiabetesExperiment. Verify that the pipeline is running.
+
+23.In the left-hand pane, under Author, click Designer.
+
+24.Click DiabetesPipeline.
+
+25.Click View run overview.
+
+26.In the pane that appears, click DiabetesExperiment. This returns us to the same screen where we verified the pipeline is running.
+
+- View the Results
+
+1.Wait for the pipeline to finish. This usually takes about 10 minutes.
+
+2.Click the link for the Run ID. Examine the graph.
+
+3.In the left-hand pane, under Author, click Designer.
+
+4.Click DiabetesPipeline.
+
+5.Right-click on Score Model and select Visualize Scored dataset from the context menu.
+
+6.Examine the data and then click Close.
+
+7.Right-click on Evaluate Model and select Visualize Evaluation results from the context menu.
+
+8.Examine the results and then click Close.
